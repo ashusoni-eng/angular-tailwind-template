@@ -25,7 +25,7 @@ This project is an Angular boilerplate with Tailwind CSS, providing a solid foun
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/your-repo.git
+   git clone https://github.com/ashusoni-eng/angular-tailwind-template.git
    ```
 2. Install the dependencies:
    ```bash

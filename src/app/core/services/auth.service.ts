@@ -137,9 +137,7 @@ private readonly http = inject(HttpClient);
 
   setRememberMe(email: string, password: any, rememberMe: any) {
     const expirationDate = new Date();
-    expirationDate.setTime(expirationDate.getTime() + 24 * 60 * 60 * 1000); // 24 hours
-    // this.cookieService.set('rememberEmail', email, expirationDate);
-    // this.cookieService.set('rememberPassword', password, expirationDate);
+    expirationDate.setTime(expirationDate.getTime() + 24 * 60 * 60 * 1000); // 24 hours    
 
     const encryptedEmail = this.encrypt(email);
     const encryptedPassword = this.encrypt(password);

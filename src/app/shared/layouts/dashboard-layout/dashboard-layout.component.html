@@ -1,0 +1,12 @@
+<main class="flex flex-col w-full">
+  <div class="flex h-full bg-white md:bg-white overflow-hidden min-h-screen">
+    <app-sidebar/>
+    <div class="flex flex-1 flex-col">
+      <app-main-navbar />
+      <div class="h-full overflow-auto md:ml-16 transition-all duration-300 mt-16">
+        <router-outlet/>
+      </div>
+      <app-footer class="ml-0 md:ml-16"/>
+    </div>
+  </div>
+</main>

@@ -1,0 +1,103 @@
+<header
+  class="flex h-14 z-10 items-center md:gap-4 gap-1 md:border-b md:shadow-none shadow-lg shadow-gray-navbar bg-white px-[0.5rem] fixed w-full"
+  [ngClass]="{'pl-64': isExpanded, 'md:pl-[5rem] pl-[4rem]': !isExpanded}">
+  <h1 class="text-black whitespace-nowrap md:text-lg text-sm font-bold transition-all duration-300" [title]="pageTitle">
+    {{ pageTitle }}
+  </h1>
+  <div class="flex-1"></div>
+  <nav class="flex items-center gap-2">
+
+    <div class="relative">
+      <!-- Notification Bell -->
+      <div class="inline-block">
+        <button (click)="togglePanel()" class="relative p-2 bg-white rounded-full shadow-md z-30">
+          <img src="assets/images/notificationn.svg" class="h-6 w-6">
+          <span *ngIf="hasUnreadNotifications"
+            class="absolute top-0 right-0 h-2 w-2 bg-green-500 rounded-full ring-2 ring-white"></span>
+          <!-- Bell Icon SVG -->
+        </button>
+      </div>
+      <!-- Background Overlay (for mobile/modal feel) -->
+      <div *ngIf="showPanel" class="fixed border-b inset-0 bg-black bg-opacity-40 z-20 sm:hidden"
+        style="border: 2px solid black;" (click)="closePanel()">
+
+      </div>
+
+      <!-- Notification Panel -->
+      <div #notificationPanel *ngIf="showPanel" class="fixed border-b inset-x-4 top-20 sm:top-auto sm:inset-x-auto sm:absolute sm:right-0 sm:mt-2 
+                  bg-white w-auto sm:w-80 rounded-md shadow-lg z-30 custom-dropdown" style="border: 2px solid black;">
+
+        <!-- Header -->
+        <div class="flex justify-between items-center p-4 border-b">
+          <h3 class="text-lg font-bold">Notifications</h3>
+          <button (click)="closePanel()"
+            class="text-gray-500 hover:text-black bg-green-500 text-white rounded-lg p-2 shadow-sm hover:bg-green-600">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+            <!-- Close Icon SVG -->
+          </button>
+        </div>
+
+        <!-- Notification Content -->
+        <div class="max-h-96 overflow-y-auto ">
+          <!-- Notification 1 -->
+          @if (recentNotifications.length > 0) {
+          @for (recentNotification of recentNotifications; track recentNotification.id) {
+          <div class="p-4 border-b hover:bg-gray-50" [ngClass]="{
+            'bg-gray-50': recentNotification.is_read === 1,
+            'hover:bg-gray-50': recentNotification.is_read !== 1
+          }">
+            <div class="flex">
+              <div class="flex-shrink-0 mr-3">
+                <svg class="h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clip-rule="evenodd" />
+                </svg>
+              </div>
+              <div>
+                <p class="text-sm text-gray-800">{{recentNotification.notification}}.</p>
+                <p class="text-xs text-gray-500 mt-1 text-black">{{ formatTime(recentNotification.created_at) }}</p>
+              </div>
+            </div>
+          </div>
+          }
+          }@else {
+          <p class="text-1xl font-bold mb-8 text-center" style="margin-top: 15px;margin-bottom: 1rem;font-weight: 500;">
+            No
+            Notification Found.</p>
+          }
+        </div>
+
+        <!-- Footer -->
+
+        <h3
+          class="text-1xl font-bold cursor-pointer text-center ml-2 mr-2 px-6 py-2 bg-green-500 text-white rounded-md shadow-sm hover:bg-green-600"
+          *ngIf="recentNotifications.length>0" (click)="navigateTo('all-notification')"
+          style="margin-top: 1rem; margin-bottom: 1rem; ">Show all notifications
+        </h3>
+      </div>
+    </div>
+
+    <div class="relative" #dropdownContainer>
+      <button (click)="toggleDropdown()" class="flex items-center gap-2 rounded-lg px-3 py-2 text-gray-700">
+        <img [src]="profileImage()" alt="User" class="h-8 w-8 rounded-full" />
+        <span>{{ userDataStorage()?.name || user()?.name }}</span>
+        <i class="fas fa-chevron-down"></i>
+        <img src="assets/images/svg/dropdown-profile.svg">
+      </button>
+
+      <div *ngIf="dropdownOpen"
+        class="absolute right-0 mt-2 w-48 rounded-md bg-white py-1 shadow-lg shadow-gray-shadowg border border-gray-shadowborder z-10">
+        <a href="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
+        <a href="/setting" *ngIf="authService.isSuperAdmin()"
+          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Manage Contact Us</a>
+        <a href="/profile-password" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Change Password</a>
+        <button (click)="logout()" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign
+          out</button>
+      </div>
+    </div>
+  </nav>
+</header>

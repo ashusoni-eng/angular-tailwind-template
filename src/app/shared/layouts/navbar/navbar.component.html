@@ -1,0 +1,70 @@
+<!-- <ng-container >
+  <div class="fixed inset-0 flex items-center bg-white/50 backdrop-blur-xs justify-center z-50 justify-center z-50">
+    <div class="flex flex-col items-center">
+      <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-green-500"></div>
+      <div class="px-5 mt-2 text-gray-700">Loading... Please wait...</div>
+    </div>
+  </div>
+</ng-container> -->
+
+
+<nav class="bg-white text-black p-4 md:shadow-none shadow-md shadow-gray-shadownav relative z-50">
+  <div class="container mx-auto flex flex-wrap items-center justify-between">
+    <!-- Logo -->
+    <a href="/" class="back_arrow md:hidden"><img src="assets/images/back-arrow.png" class="w-4 h-4"></a>
+    <a href="/" class="flex items-center">
+      <img src="/assets/images/logos/getLicense-logo.png" alt="GetLicense Logo" class="h-8 w-auto">
+      <span class="ml-2 text-lg font-semibold">getlicense.co.za</span>
+    </a>
+
+    <!-- Mobile menu button -->
+    <button (click)="toggleMobileMenu()"
+      class="md:hidden focus:outline-none bg-gray-navbar text-black-iconmenu p-2 rounded-md">
+      <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path *ngIf="!isMobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M4 6h16M4 12h16M4 18h16" />
+        <path *ngIf="isMobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+
+    <!-- Navigation links and auth user -->
+    <div [class.hidden]="!isMobileMenuOpen" class="w-full md:flex md:w-auto md:items-center">
+      <!-- Auth User -->
+      @if(user()){
+      <ul class="flex flex-col mt-4 md:flex-row md:space-x-8 md:mt-0">
+        <li><a routerLink="/dashboard" class="block py-2 hover:text-primary">Dashboard</a></li>
+        <li><a routerLink="/contact-us" class="block py-2 hover:text-primary">Contact Us</a></li>
+        <li>
+          <div class="relative">
+            <button (click)="toggleDropdown()"
+              class="flex items-center gap-2 rounded-lg px-3 py-2 text-gray-700 hover:bg-gray-100">
+              <img [src]="authService.profileImage()" alt="User" class="h-8 w-8 rounded-full" />
+              <span>{{ user()?.name || 'User' }}</span>
+              <i class="fas fa-chevron-down"></i>
+            </button>
+            <div *ngIf="dropdownOpen"
+              class="absolute right-0 mt-2 w-48 rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 z-10">
+              <a href="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
+              <button (click)="logout()"
+                class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</button>
+            </div>
+          </div>
+
+        </li>
+      </ul>
+
+      }@else {
+      <ul class="flex flex-col mt-4 md:flex-row md:space-x-8 md:mt-0">
+        <li><a routerLink="/login" class="block py-2 hover:text-primary">Login</a></li>
+        <li>
+          <a class="block py-2 hover:text-primary" routerLink="/register/private">Register New Account
+          </a>
+        </li>
+        <!-- <li><a routerLink="/contact-us" class="block py-2 hover:text-primary">Contact Us</a></li> -->
+      </ul>
+      }
+
+    </div>
+  </div>
+</nav>

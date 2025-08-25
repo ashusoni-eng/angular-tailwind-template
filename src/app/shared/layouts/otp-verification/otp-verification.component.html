@@ -1,0 +1,60 @@
+<!-- Modal Overlay -->
+<div class="fixed inset-0 bg-black-iconmenu bg-opacity-90 flex items-center justify-center z-50">
+  <!-- Modal Content -->
+  <div class="bg-white rounded-lg shadow-xl p-8 w-full max-w-md m-4 relative">
+    <!-- Close button -->
+    <button (click)="onClose()" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+
+    <h2 class="text-2xl font-semibold text-gray-800 mb-2">OTP Authentication</h2>
+    <p class="text-gray-600 mb-2">We have sent you an OTP on your email</p>
+    <p class="text-gray-500 font-medium mb-8">{{ maskEmail(email) }}</p>
+
+    <!-- Timer -->
+
+    <p class="text-black-700 mb-8 text-left">
+      @if(resendTimer()!=0){
+      {{ resendTimer() | timerFormat }}
+      }
+    </p>
+
+    <div class="flex space-x-4 mb-6 justify-center md:justify-start">
+      <!-- Updated OTP input styling -->
+      <ng-otp-input [formControl]="otpControl" class="md:w-[3.125rem] md:h-[3.125rem]" [config]="{
+            allowNumbersOnly: true,
+            length: 6,
+            inputStyles: {
+              'font-size': '18px',
+              'border': '1px solid #000',
+              'color': '#000',
+              'background-color': '#fff',
+              'border-radius': '5px',
+              'text-align': 'center'
+            }
+          }" (onInputChange)="onOtpChange($event)" [class.error]="errorMessage()"
+        (keydown.enter)="verifyOtp()"></ng-otp-input>
+
+    </div>
+    <button *ngIf="showMessage"
+      class="text-green-600 hover:text-green-700 text-sm items-end flex justify-end w-full mb-2.5 font-semibold"
+      (click)="onSendOtp()"> Resend Otp</button>
+    @if (errorMessage()) {
+    <div class="text-red-500 text-sm mb-4 p-3 bg-red-50 rounded-lg w-full text-center">
+      {{ errorMessage() }}
+    </div>
+    }
+
+    <button (click)="verifyOtp()" class="w-full py-3 px-4 bg-green-600 text-white rounded-lg font-medium
+             hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2
+             disabled:bg-gray-300 disabled:cursor-not-allowed
+             transition-colors duration-200">
+      <span class="flex items-center justify-center">
+        <span *ngIf="loading()" class="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></span>
+        <span>Verify</span>
+      </span>
+    </button>
+  </div>
+</div>

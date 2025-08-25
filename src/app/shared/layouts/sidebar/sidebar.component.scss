@@ -1,0 +1,10 @@
+@media (max-width:767px) {
+    .absolute.left-full.ml-6.hidden {
+        display: none;
+    }
+}
+
+::ng-deep .text-ellipsisss {
+    text-overflow: ellipsis !important;
+    display: flow-root !important;
+}

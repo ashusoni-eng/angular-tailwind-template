@@ -1,0 +1,88 @@
+<!-- Mobile Overlay -->
+<div *ngIf="isMobileOpen" class="fixed inset-0 bg-black/50 z-40 md:hidden" (click)="toggleMobileSidebar()">
+</div>
+
+<!-- Mobile Toggle Button -->
+<button class="fixed top-2 z-50 md:hidden bg-gray-navbar text-black-iconmenu p-2 rounded-md px-4 py-2 shadow-lg"
+  [ngClass]="{
+    'left-[65px]': isMobileOpen && !isExpanded,
+    'left-[10px]': !isMobileOpen && !isExpanded,
+    'left-[226px]': isMobileOpen && isExpanded,
+  }" (click)="toggleMobileSidebar()">
+  <fa-icon [icon]="isMobileOpen ? faX : faBars" class="h-5 w-5"></fa-icon>
+</button>
+
+<!-- Sidebar -->
+<aside
+  class="fixed top-0 left-0 z-40 h-screen md:bg-white bg-gray-navbar transition-all duration-300 ease-in-out border-r shadow-lg"
+  [ngClass]="{
+    'w-56': isExpanded,
+    'w-16': !isExpanded,
+    'translate-x-0': isMobileOpen,
+    '-translate-x-full md:translate-x-0': !isMobileOpen
+  }">
+
+  <!-- Toggle Button (Desktop) -->
+  <button class="hidden absolute -right-3 top-8 bg-white border rounded-md p-2 cursor-pointer shadow-md"
+    (click)="toggleSidebar()">
+    <fa-icon [icon]="isExpanded ? faChevronLeft : faChevronRight" class="h-5 w-5"></fa-icon>
+  </button>
+
+  <!-- Logo -->
+  <div class="p-4 bg-white">
+    <a routerLink="/" class="flex items-center gap-2 font-semibold">
+      <img src="/assets/images/logos/getLicense-logo.png" alt="GetLicense Logo" class="h-8 w-auto">
+      <span *ngIf="isExpanded" class="ml-2 text-sm font-semibold">getlicense.co.za</span>
+    </a>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="p-2 space-y-0">
+    <div class="p-2 text-left">
+      <button (click)="toggleSidebar()"
+        class="px-2 py-1 bg-gray-200 text-gray-500 hover:bg-gray-100 hover:text-gray-900 rounded-lg transition-colors">
+        <fa-icon [icon]="isExpanded ? faArrowLeft : faArrowRight"></fa-icon>
+        <span class="sr-only">Toggle Sidebar</span>
+      </button>
+    </div>
+    <ng-container *ngFor="let item of navItems">
+      <!-- *ngIf="item.label !== 'Admin' && item.label !== 'Renewal Fees'  || isSuperAdmin" -->
+      <a *ngIf="item.label !== 'Admin' && item.label !== 'Renewal Fees' && item.label !== 'Social Page' && item.label !== 'Natis' && !item.showToSuperAdmin || isSuperAdmin"
+        (click)="closeSidebar()" [routerLink]="item.href" [ngClass]="{
+        '!bg-white md:!bg-gray-100 !text-black !font-semibold': isActiveRoute(item.href)
+      }"
+        class="flex items-center px-3 py-2 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors group relative font-['inter']">
+        <!-- Icon Image -->
+        <div [ngClass]="{'mr-2': isExpanded, 'mx-auto': !isExpanded}"
+          class="flex items-center justify-center w-8 h-8 whitespace-nowrap">
+          <img [src]="item.img" class="h-5 w-5 transition-all duration-300" />
+        </div>
+        <span class="transition-all text-ellipsisss duration-300 whitespace-nowrap overflow-hidden flex flex-1"
+          [title]="item.label" [ngStyle]="{
+              'max-width': isExpanded ? '200px' : '0',
+              'opacity': isExpanded ? '1' : '0',
+              'margin-left': isExpanded ? '0' : '0'
+            }">
+          {{ item.label }}
+        </span>
+
+        <!-- Tooltip for collapsed state -->
+        <div *ngIf="!isExpanded && !isMobileOpen"
+          class="absolute left-full ml-6 hidden group-hover:block px-2 py-1 bg-gray-800 text-white text-sm rounded whitespace-nowrap transition-opacity duration-300">
+          {{ item.label }}
+        </div>
+      </a>
+    </ng-container>
+  </nav>
+
+  <!-- Donation Section -->
+  <div class="absolute bottom-0 w-full p-4 transition-all duration-300"
+    [ngClass]="{'opacity-100 max-h-[200px]': isExpanded, 'opacity-0 max-h-0 overflow-hidden pointer-events-none': !isExpanded}">
+    <p class="text-sm text-black-600 mb-3">
+      Please help to keep our Generators Fueled and the Code Flowing with a Small Donation:
+    </p>
+    <div class="flex gap-2 w-full h-24">
+      <img src="assets/images/paypal.png" alt="PayPal" class="h-full object-contain">
+    </div>
+  </div>
+</aside>

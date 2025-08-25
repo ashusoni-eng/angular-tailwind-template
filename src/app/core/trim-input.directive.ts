@@ -1,11 +1,11 @@
-import { Directive, ElementRef, HostListener } from '@angular/core';
+import { Directive, ElementRef, HostListener, Inject } from '@angular/core';
 
 @Directive({
   selector: '[appTrimInput]'
 })
 export class TrimInputDirective {
 
-  constructor(private el: ElementRef) {}
+  constructor(@Inject(ElementRef) private el: ElementRef) {}
 
   @HostListener('blur') onBlur() {
     this.el.nativeElement.value = this.el.nativeElement.value.trim();

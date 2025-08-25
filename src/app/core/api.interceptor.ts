@@ -1,11 +1,4 @@
-import {
-  HttpErrorResponse,
-  HttpEvent,
-  HttpHandlerFn,
-  HttpInterceptorFn,
-  HttpRequest,
-  HttpStatusCode
-} from '@angular/common/http';
+import { HttpErrorResponse, HttpEvent, HttpHandlerFn, HttpInterceptorFn, HttpRequest, HttpStatusCode } from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
 import {catchError, finalize, Observable, retry, share, throwError, timeout, timer} from 'rxjs';
 import {environment} from '../../environments/environment';

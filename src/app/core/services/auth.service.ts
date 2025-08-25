@@ -14,19 +14,15 @@ import { decodeToken, isValidToken } from '../utils/token.utils';
 import { VerifyOtp } from '../interfaces/verify-otp';
 import { ApiResponse } from '../interfaces/api-response';
 import { Credentials } from '../interfaces/credentials';
-import { Country } from '../interfaces/country';
 import { handleApiResponse } from '../utils/api.utils';
 import { AuthProvider } from '../interfaces/auth-provider';
 import { AuthResponse } from '../interfaces/auth-response';
-import { PaginatedResponse } from '../interfaces/paginated-response';
-import { PaginatedData } from '../interfaces/paginated-data';
 import { ToastrService } from 'ngx-toastr';
 import { ResetPassword } from '../interfaces/reset-password';
 import { ProfilePassword } from '../interfaces/profile-password';
 import { UsersService } from './users.service';
 import { CookieService } from 'ngx-cookie-service';
 import * as CryptoJS from 'crypto-js';
-import { FormDataService } from './formdata.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -41,8 +37,7 @@ export class AuthService {
   private readonly _loading = signal(false);
   private readonly _error = signal<AuthError | null>(null);
   public readonly _currentUser = signal<DecodedToken | null>(null);
-  private readonly userService = inject(UsersService);
-  private formDataService = inject(FormDataService);
+  private readonly userService = inject(UsersService);  
 
   readonly loading = this._loading.asReadonly();
   readonly error = this._error.asReadonly();
@@ -272,20 +267,7 @@ export class AuthService {
     }).pipe(
       catchError(error => this.handleAuthError(error))
     );
-  }
-
-  getCountries(): Observable<PaginatedData<Country>> {
-    return this.handleRequest(this.http.get<PaginatedResponse<Country>>(`${environment.apiUrl}/countries`));
-  }
-
-  getCountryList(): Observable<PaginatedData<Country>> {
-    return this.handleRequest(this.http.get<PaginatedResponse<Country>>(`${environment.apiUrl}/country-list`));
-  }
-
-  getAllCountryList(): Observable<any[]> {
-    return this.handleRequest(
-      this.http.get<ApiResponse<any[]>>(`${environment.apiUrl}/all-country-list`));
-  }
+  }  
 
   private initializeFromToken(): void {
     const token = this.credentialsService.credentials()?.accessToken;
@@ -300,8 +282,7 @@ export class AuthService {
   }
   private handleAuthSuccess(response: AuthResponse): void {
     const token: Credentials = response.token;
-    const decoded = decodeToken(token.accessToken);
-    localStorage.setItem('entity_type', JSON.stringify(response?.user?.entity_type)); // Store updated user in localStorage
+    const decoded = decodeToken(token.accessToken);    
     if (!decoded || !isValidToken(decoded)) {
       throw new Error('Invalid token received');
     }
@@ -342,8 +323,7 @@ export class AuthService {
     sessionStorage.clear();
     localStorage.clear();
 
-    if (!this.router.url.includes(redirectUrl)) {
-      this.formDataService.clearData();
+    if (!this.router.url.includes(redirectUrl)) {      
       this.router.navigateByUrl(redirectUrl, { replaceUrl: true });
     }
   }

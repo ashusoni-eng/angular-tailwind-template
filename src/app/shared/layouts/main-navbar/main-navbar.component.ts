@@ -13,7 +13,6 @@ import { AuthService } from "../../../core/services/auth.service";
 import { filter, map } from "rxjs/operators";
 import { NavigationEnd, Router, ActivatedRoute } from "@angular/router";
 import { Title } from "@angular/platform-browser";
-import { NotificationsService } from "../../../core/services/notifications.service";
 import { formatTime } from "../../../core/utils/api.utils";
 
 @Component({
@@ -33,14 +32,10 @@ export class MainNavbarComponent {
   user = computed(() => this.authService.currentUser());
   userDataStorage = computed(() => this.authService.currentUserData());
   profileImage = computed(() => this.authService.profileImage()); //
-  protected readonly notificationService = inject(NotificationsService);
-  recentNotifications: any;
   formatTime = formatTime;
-  hasUnreadNotifications: boolean = false;
 
   constructor(
     protected authService: AuthService,
-    private el: ElementRef,
     private cdRef: ChangeDetectorRef,
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -76,8 +71,7 @@ export class MainNavbarComponent {
         this.pageTitle = title;
         this.updateTitle();
         this.titleService.setTitle(title); //Set browser title
-      });
-    this.loadRecentNotification();
+      });    
   }
   //Extract logic into a function to run at startup
   private updateTitleFromRoute(): void {
@@ -129,13 +123,7 @@ export class MainNavbarComponent {
     }
     const routeData = this.activatedRoute.firstChild?.snapshot.data;
     this.pageTitle = routeData?.["title"] || "Dashboard"; // Fallback to 'Dashboard' if no title is set
-  }
-  togglePanel() {
-    this.showPanel = !this.showPanel;
-    if (this.showPanel) {
-      this.markNotificationsAsRead();
-    }
-  }
+  }  
 
   closePanel() {
     this.showPanel = false;
@@ -147,23 +135,6 @@ export class MainNavbarComponent {
     setTimeout(() => {
       this.router.navigate([url]);
     }, 50);
-  }
-
-  loadRecentNotification() {
-    this.notificationService.getlatestNotification().subscribe({
-      next: (response: any) => {
-        this.recentNotifications = response;
-        this.hasUnreadNotifications = this.recentNotifications.some((n: any) => !n.is_read);
-      },
-      error: (error) => {
-        console.error("Error loading vehicles:", error);
-      },
-    });
-  }
-
-  markNotificationsAsRead() {
-    this.hasUnreadNotifications = false;
-    this.notificationService.markAllAsRead().subscribe();
   }
 
 

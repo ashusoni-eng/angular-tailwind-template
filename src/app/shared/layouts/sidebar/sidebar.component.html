@@ -31,8 +31,8 @@
   <!-- Logo -->
   <div class="p-4 bg-white">
     <a routerLink="/" class="flex items-center gap-2 font-semibold">
-      <img src="/assets/images/logos/getLicense-logo.png" alt="GetLicense Logo" class="h-8 w-auto">
-      <span *ngIf="isExpanded" class="ml-2 text-sm font-semibold">getlicense.co.za</span>
+      <!-- <img src="/assets/images/logos/logo.png" alt="Logo" class="h-8 w-auto"> -->
+      <span *ngIf="isExpanded" class="ml-2 text-sm font-semibold">Angular</span>
     </a>
   </div>
 
@@ -46,13 +46,13 @@
       </button>
     </div>
     <ng-container *ngFor="let item of navItems">
-      <!-- *ngIf="item.label !== 'Admin' && item.label !== 'Renewal Fees'  || isSuperAdmin" -->
-      <a *ngIf="item.label !== 'Admin' && item.label !== 'Renewal Fees' && item.label !== 'Social Page' && item.label !== 'Natis' && !item.showToSuperAdmin || isSuperAdmin"
+      <a 
         (click)="closeSidebar()" [routerLink]="item.href" [ngClass]="{
         '!bg-white md:!bg-gray-100 !text-black !font-semibold': isActiveRoute(item.href)
       }"
         class="flex items-center px-3 py-2 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors group relative font-['inter']">
         <!-- Icon Image -->
+        
         <div [ngClass]="{'mr-2': isExpanded, 'mx-auto': !isExpanded}"
           class="flex items-center justify-center w-8 h-8 whitespace-nowrap">
           <img [src]="item.img" class="h-5 w-5 transition-all duration-300" />
@@ -73,16 +73,5 @@
         </div>
       </a>
     </ng-container>
-  </nav>
-
-  <!-- Donation Section -->
-  <div class="absolute bottom-0 w-full p-4 transition-all duration-300"
-    [ngClass]="{'opacity-100 max-h-[200px]': isExpanded, 'opacity-0 max-h-0 overflow-hidden pointer-events-none': !isExpanded}">
-    <p class="text-sm text-black-600 mb-3">
-      Please help to keep our Generators Fueled and the Code Flowing with a Small Donation:
-    </p>
-    <div class="flex gap-2 w-full h-24">
-      <img src="assets/images/paypal.png" alt="PayPal" class="h-full object-contain">
-    </div>
-  </div>
+  </nav>  
 </aside>

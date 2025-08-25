@@ -1,3 +1,12 @@
 import { Routes } from '@angular/router';
 
-export const routes: Routes = [];
+import { WelcomeComponent } from './pages/welcome/welcome.component';
+
+export const routes: Routes = [
+  {
+    path: '',
+    component: WelcomeComponent,
+    title: 'Welcome to Angular Boilerplate',
+  },
+];
+

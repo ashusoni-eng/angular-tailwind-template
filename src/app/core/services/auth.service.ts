@@ -22,13 +22,12 @@ import { ResetPassword } from '../interfaces/reset-password';
 import { ProfilePassword } from '../interfaces/profile-password';
 import { UsersService } from './users.service';
 import { CookieService } from 'ngx-cookie-service';
-import * as CryptoJS from 'crypto-js';
+  import * as CryptoJS from 'crypto-js';
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-
-  private readonly http = inject(HttpClient);
+private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
   private readonly credentialsService = inject(CredentialsService);
   protected readonly toastr = inject(ToastrService);
